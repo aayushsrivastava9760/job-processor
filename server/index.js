@@ -172,6 +172,54 @@ app.post("/jobs", (req, res) => {
     })
 })
 
+/**
+ * Get Metric data points
+ */
+app.get("/metrics", (req, res) => {
+    const now = Date.now()
+
+    const totalJobs = db
+        .prepare(`SELECT COUNT(*) as count from jobs`)
+        .get().count
+
+    const byStatus = db
+        .prepare(`
+            SELECT status, COUNT(*) as count
+            FROM jobs
+            GROUP BY status
+        `)
+        .all()
+
+    const statusCounts = {
+        PENDING: 0,
+        RUNNING: 0,
+        DONE: 0,
+        FAILED: 0,
+        DLQ: 0
+    }
+
+    for (const row of byStatus) {
+        statusCounts[row.status] = row.count
+    }
+
+    const totalRetries = db
+        .prepare(`SELECT SUM(retry_count) as count from jobs`)
+        .get().count || 0
+
+    console.log("[METRICS_SCRAPED]")
+
+    res.json({
+        total_jobs: totalJobs,
+        pending_jobs: statusCounts.PENDING,
+        running_jobs: statusCounts.RUNNING,
+        done_jobs: statusCounts.DONE,
+        failed_jobs: statusCounts.FAILED,
+        dlq_jobs: statusCounts.DLQ,
+        total_retries: totalRetries,
+        generated_at: now
+    });
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
 })
