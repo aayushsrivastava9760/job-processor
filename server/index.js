@@ -36,7 +36,42 @@ app.use(authMiddleWare)
  * Get jobs (for dashboard)
  */
 app.get("/jobs", (req, res) => {
-  res.status(501).json({ message: "Not implemented yet" });
+    const user = req.user
+    const {status} = req.query
+    let {limit} = req.query
+
+    limit = parseInt(limit, 10);
+    if(isNaN(limit) || limit <= 0){
+        limit = 50
+    }
+
+    limit = Math.min(limit, 100);
+
+    let query = `
+    SELECT 
+        id, 
+        status, 
+        retry_count,
+        worker_id,
+        created_at,
+        updated_at
+    FROM jobs
+    WHERE user_id = ?
+    `
+
+    const params = [user.id]
+
+    if(status){
+        query += `AND status = ?`
+        params.push(status)
+    }
+
+    query += `ORDER BY created_at DESC LIMIT ?`
+    params.push(limit)
+
+    const jobs = db.prepare(query).all(...params)
+
+    res.json({jobs})
 });
 
 /**
