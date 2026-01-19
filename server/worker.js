@@ -37,7 +37,7 @@ async function runWorker(){
                 SELECT * FROM jobs
                 WHERE 
                     status = 'PENDING'
-                    OR ( status = 'RIUNNING' AND leased_until < ? )
+                    OR ( status = 'RUNNING' AND leased_until < ? )
                 ORDER BY created_at
                 LIMIT 1
             `).get(now)
