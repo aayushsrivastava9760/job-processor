@@ -4,11 +4,13 @@ import { JobTable } from "./components/jobTable/JobTable";
 import "./App.css";
 import { MetricCard } from "./components/metricCard/MetricCard";
 import { JobDetailsPanel } from "./components/jobDetailsPanel/JobDetailsPanel";
+import { SubmitJobDrawer } from "./components/submitJobDrawer/SubmitJobDrawer";
 
 function App() {
   const [jobs, setJobs] = useState([]);
   const [metrics, setMetrics] = useState({});
   const [selectedJob, setSelectedJob] = useState(null);
+  const [isSubmitOpen, setIsSubmitOpen] = useState(false);
 
   async function load() {
     setJobs(await fetchJobs());
@@ -21,11 +23,6 @@ function App() {
     return () => clearInterval(id);
   }, []);
 
-  async function handleSubmit() {
-    await submitJob({ payload: { value: Math.random() } });
-    load();
-  }
-
   return (
     <div className="app">
       <header className="header">
@@ -34,7 +31,10 @@ function App() {
       </header>
 
       <div className="toolbar">
-        <button className="primary-btn" onClick={handleSubmit}>
+        <button
+          className="primary-btn"
+          onClick={() => setIsSubmitOpen(true)}
+        >
           + Submit Job
         </button>
       </div>
@@ -61,6 +61,23 @@ function App() {
           job={selectedJob}
           onClose={() => setSelectedJob(null)}
         />
+        </>
+      )}
+
+      {isSubmitOpen && (
+        <>
+          <div
+            className="drawer-backdrop"
+            onClick={() => setIsSubmitOpen(false)}
+          />
+          <SubmitJobDrawer
+            onClose={() => setIsSubmitOpen(false)}
+            onSubmit={async (payload) => {
+              await submitJob(payload);
+              setIsSubmitOpen(false);
+              load();
+            }}
+          />
         </>
       )}
     </div>

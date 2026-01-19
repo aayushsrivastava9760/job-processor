@@ -1,0 +1,66 @@
+.submit-drawer {
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100vh;
+  background: white;
+  z-index: 1001;
+
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  overflow-y: auto;
+
+  animation: slideIn 0.25s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.panel-content {
+  padding: 30px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+textarea {
+  width: 100%;
+  font-family: monospace;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  resize: vertical;
+}
+
+.drawer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.secondary-btn {
+  background: #e5e7eb;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background: #d1d5db;
+}
+
+.error-text {
+  color: #dc2626;
+  margin-top: 8px;
+}
