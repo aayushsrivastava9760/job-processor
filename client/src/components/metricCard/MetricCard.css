@@ -1,0 +1,56 @@
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.metric-label {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Metric color variants */
+
+.metric-default {
+  border-left: 6px solid #9ca3af;
+}
+
+.metric-pending {
+  border-left: 6px solid #f59e0b;
+}
+
+.metric-running {
+  border-left: 6px solid #3b82f6;
+}
+
+.metric-done {
+  border-left: 6px solid #10b981;
+}
+
+.metric-failed {
+  border-left: 6px solid #ef4444;
+}
+
+.metric-dlq {
+  border-left: 6px solid #6b7280;
+}
+
+.metric-retry {
+  border-left: 6px solid #8b5cf6;
+}

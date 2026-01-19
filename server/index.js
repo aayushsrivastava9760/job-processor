@@ -75,6 +75,52 @@ app.get("/jobs", (req, res) => {
 });
 
 /**
+ * Get job details by ID
+ */
+app.get("/jobs/:jobId", (req, res) => {
+    const { jobId } = req.params;
+    const user = req.user
+
+    const job = db.prepare(
+        `
+        SELECT
+        id,
+        user_id,
+        payload,
+        status,
+        retry_count,
+        max_retries,
+        leased_until,
+        worker_id,
+        idempotency_key,
+        created_at,
+        updated_at
+        FROM jobs
+        WHERE id = ?
+        `
+    ).get(jobId);
+
+    if (!job) {
+        return res.status(404).json({ error: "Job not found" });
+    }
+
+    console.log(`[JOB_FETCHED] job_id=${jobId} user=${user.id}`);
+
+    res.json({
+        id: job.id,
+        status: job.status,
+        retry_count: job.retry_count,
+        max_retries: job.max_retries,
+        worker_id: job.worker_id,
+        leased_until: job.leased_until,
+        idempotency_key: job.idempotency_key,
+        created_at: job.created_at,
+        updated_at: job.updated_at,
+        payload: job.payload ? JSON.parse(job.payload) : null,
+    });
+});
+
+/**
  * Creating a new job
  */
 app.post("/jobs", (req, res) => {
