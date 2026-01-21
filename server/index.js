@@ -1,10 +1,11 @@
 const express = require('express')
 const cors = require('cors')
+const path = require('path')
 
 const authMiddleWare = require('./auth')
 
 const {v4: uuidv4} = require("uuid")
-const db = require("./db")
+const { createDB } = require("./db")
 const {
     MAX_RUNNING_JOBS,
     MAX_SUBMISSION_PER_MINUTE
@@ -12,6 +13,7 @@ const {
 
 const app = express()
 const PORT = 4000
+const db = createDB(path.join(__dirname, "queue.db"))
 
 app.use(cors())
 app.use(express.json())
@@ -22,13 +24,6 @@ app.use(express.json())
 app.get('/health', (req, res)=>{
     res.json({status: "ok"})
 })
-
-app.get("/debug/db", (req, res) => {
-  const tables = db
-    .prepare("SELECT name FROM sqlite_master WHERE type='table'")
-    .all();
-  res.json(tables);
-});
 
 app.use(authMiddleWare)
 
@@ -266,6 +261,10 @@ app.get("/metrics", (req, res) => {
     });
 })
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`)
-})
+if(require.main === module){
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`)
+    })
+}
+
+module.exports = app

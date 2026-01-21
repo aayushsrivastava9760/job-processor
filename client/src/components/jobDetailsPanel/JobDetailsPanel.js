@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { fetchJobById } from "../../api"; // adjust path if needed
+import { fetchJobById } from "../../api"; 
 import "./JobDetailsPanel.css";
 
 export function JobDetailsPanel({ job, onClose }) {
   const [fetchedJob, setFetchedJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  console.log(job.id);
 
   useEffect(() => {
     if (!job) return;
