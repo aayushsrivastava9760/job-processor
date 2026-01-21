@@ -1,9 +1,14 @@
-const db = require('./db')
 const {v4: uuidv4} = require('uuid')
+const path = require('path')
+const { createDB } = require("./db")
+const {
+    LEASE_MS,
+    POLL_INTERVAL_MS,
+    DB_NAME
+} = require('./constants')
 
+const db = createDB(path.join(__dirname, DB_NAME))
 const WORKER_ID = `worker-${uuidv4().slice(0, 8)}`
-const LEASE_MS = 30000 // 30 seconds
-const POLL_INTERVAL_MS = 2000
 
 console.log(`worker started: ${WORKER_ID}`)
 

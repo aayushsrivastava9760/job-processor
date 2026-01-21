@@ -1,7 +1,4 @@
-const USERS = {
-    "user-1-key" : {id: "user-1", maxConcurrent: 5},
-    "user-2-key" : {id: "user-2", maxConcurrent: 5}
-};
+const {USERS} = require('./constants')
 
 module.exports = function authMiddleWare(req, res, next){
     const authHeader = req.headers["authorization"]
