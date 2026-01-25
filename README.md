@@ -45,7 +45,7 @@ PENDING → RUNNING → DONE
 - Lease: Worker claims a job for a fixed duration
 - Ack: Successful completion marks job as DONE
 - Retry: Failed jobs are retried up to max_retries
-- Retry: Failed jobs are retried up to max_retries
+- DLQ: Jobs exceeding retries are moved to Dead Letter Queue
 
 ## Dashboard Features
 

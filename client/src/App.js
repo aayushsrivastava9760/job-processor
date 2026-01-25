@@ -5,6 +5,7 @@ import "./App.css";
 import { MetricCard } from "./components/metricCard/MetricCard";
 import { JobDetailsPanel } from "./components/jobDetailsPanel/JobDetailsPanel";
 import { SubmitJobDrawer } from "./components/submitJobDrawer/SubmitJobDrawer";
+import { POLLING_TIME_MS } from "./utils/constants";
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -19,7 +20,7 @@ function App() {
 
   useEffect(() => {
     load();
-    const id = setInterval(load, 3000);
+    const id = setInterval(load, POLLING_TIME_MS);
     return () => clearInterval(id);
   }, []);
 

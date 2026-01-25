@@ -43,16 +43,15 @@ app.get("/jobs", (req, res) => {
     limit = Math.min(limit, 100);
 
     let query = `
-    SELECT 
-        id, 
-        status, 
-        retry_count,
-        worker_id,
-        created_at,
-        updated_at
-    FROM jobs
-    WHERE user_id = ?
-    `
+        SELECT 
+            id, 
+            status, 
+            retry_count,
+            worker_id,
+            created_at,
+            updated_at
+        FROM jobs
+        WHERE user_id = ?`
 
     const params = [user.id]
 
@@ -77,22 +76,20 @@ app.get("/jobs/:jobId", (req, res) => {
     const user = req.user
 
     const job = db.prepare(
-        `
-        SELECT
-        id,
-        user_id,
-        payload,
-        status,
-        retry_count,
-        max_retries,
-        leased_until,
-        worker_id,
-        idempotency_key,
-        created_at,
-        updated_at
+        `SELECT
+            id,
+            user_id,
+            payload,
+            status,
+            retry_count,
+            max_retries,
+            leased_until,
+            worker_id,
+            idempotency_key,
+            created_at,
+            updated_at
         FROM jobs
-        WHERE id = ?
-        `
+        WHERE id = ?`
     ).get(jobId);
 
     if (!job) {

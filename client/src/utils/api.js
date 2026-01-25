@@ -10,23 +10,27 @@ export async function fetchJobs(status) {
         },
     })
 
+    if (!res.ok) {
+        throw new Error("Failed to fetch jobs");
+    }
+
     const data = await res.json()
     return data.jobs
 }
 
 export async function fetchJobById(jobId) {
-  const res = await fetch(`${API_BASE}/jobs/${jobId}`, {
-    headers: {
-      Authorization: `Bearer ${API_KEY}`,
-    },
-  });
+    const res = await fetch(`${API_BASE}/jobs/${jobId}`, {
+        headers: {
+            Authorization: `Bearer ${API_KEY}`,
+        },
+    });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch job details");
-  }
+    if (!res.ok) {
+        throw new Error("Failed to fetch job details");
+    }
 
-  const data = await res.json();
-  return data;
+    const data = await res.json();
+    return data;
 }
 
 export async function submitJob(payload){
@@ -46,9 +50,14 @@ export async function submitJob(payload){
 export async function fetchMetrics(){
     const res = await fetch(`${API_BASE}/metrics`, {
         headers: {
-        Authorization: `Bearer ${API_KEY}`,
+            Authorization: `Bearer ${API_KEY}`,
         },
     });
 
-    return res.json();
+    if (!res.ok) {
+        throw new Error("Failed to fetch metric details");
+    }
+
+    const data = await res.json();
+    return data;
 }
