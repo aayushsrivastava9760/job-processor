@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchJobById } from "../../api"; 
+import { fetchJobById } from "../../utils/api"; 
 import "./JobDetailsPanel.css";
 
 export function JobDetailsPanel({ job, onClose }) {
@@ -46,12 +46,17 @@ export function JobDetailsPanel({ job, onClose }) {
         {!loading && job && (
           <>
             <Detail label="Job ID" value={fetchedJob.id} />
-            <Detail label="Status" value={fetchedJob.status} />
+            <Detail 
+              label="Status" 
+              value={
+                <StatusBadge status={fetchedJob.status} />
+              } 
+            />
             <Detail label="Retries" value={fetchedJob.retry_count} />
             <Detail label="Worker" value={fetchedJob.worker_id || "-"} />
             <Detail 
-                label="Leased until" 
-                value={ fetchedJob.leased_until ? new Date(fetchedJob.leased_until).toLocaleString() : "-"} 
+              label="Leased until" 
+              value={ fetchedJob.leased_until ? new Date(fetchedJob.leased_until).toLocaleString() : "-"} 
             />
             <Detail
               label="Created At"
@@ -69,6 +74,16 @@ export function JobDetailsPanel({ job, onClose }) {
       </div>
     </div>
   );
+}
+
+function StatusBadge({ status }) {
+  if(!status) return "-";
+
+  return (
+    <span className={`status-badge status-${status}`}>
+      {status}
+    </span>
+  )
 }
 
 function Detail({ label, value }) {

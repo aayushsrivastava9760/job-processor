@@ -1,5 +1,4 @@
-const API_BASE = "http://localhost:4000"
-const API_KEY = "user-1-key"
+import { API_BASE, API_KEY } from "./constants";
 
 export async function fetchJobs(status) {
     const url = new URL(`${API_BASE}/jobs`);

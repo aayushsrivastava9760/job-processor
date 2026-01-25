@@ -7,7 +7,6 @@
   right: 0;
   width: 380px;
   height: 100vh;
-  background: white;
   z-index: 1001;
 
   box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
@@ -43,7 +42,7 @@
 .close-btn {
   background: transparent;
   border: none;
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
   color: #6b7280;
 }
@@ -70,7 +69,7 @@
   text-align: right;
 }
 
-/* JSON blocks */
+/* JSON block */
 pre {
   background: #f9fafb;
   padding: 12px;
@@ -80,15 +79,34 @@ pre {
   border: 1px solid #e5e7eb;
 }
 
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Status Badges */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.05em;
+  display: inline-block;
 }
 
-.close-btn {
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+/* Status-specific colors */
+.status-PENDING {
+  background: #f59e0b;
+}
+
+.status-RUNNING {
+  background: #3b82f6;
+}
+
+.status-DONE {
+  background: #10b981;
+}
+
+.status-FAILED {
+  background: #ef4444;
+}
+
+.status-DLQ {
+  background: #6b7280;
 }

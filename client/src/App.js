@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchJobs, submitJob, fetchMetrics } from "./api";
+import { fetchJobs, submitJob, fetchMetrics } from "./utils/api";
 import { JobTable } from "./components/jobTable/JobTable";
 import "./App.css";
 import { MetricCard } from "./components/metricCard/MetricCard";
