@@ -42,6 +42,7 @@ async function runWorker(){
                 SELECT * FROM jobs
                 WHERE 
                     status = 'PENDING'
+                    OR status = 'FAILED'
                     OR ( status = 'RUNNING' AND leased_until < ? )
                 ORDER BY created_at
                 LIMIT 1
@@ -85,7 +86,6 @@ async function runWorker(){
                 SET
                     status = 'DONE',
                     leased_until = NULL,
-                    worker_id = NULL,
                     updated_at = ?
                 WHERE id = ?
             `).run(Date.now(), job.id)
@@ -104,21 +104,19 @@ async function runWorker(){
                     UPDATE jobs
                     SET
                         status = 'DLQ',
-                        leased_unitl = NULL,
-                        worker_id = NULL,
+                        leased_until = NULL,
                         updated_at = ?
                     WHERE id = ?
-                `).get(Date.now(), job.id)
+                `).run(Date.now(), job.id)
 
                 console.log(`[JOB_DLQ] job_id=${job.id}`)
             } else {
                 db.prepare(`
                     UPDATE jobs
                     SET
-                        status = 'PENDING',
+                        status = 'FAILED',
                         retry_count = retry_count + 1,
                         leased_until = NULL,
-                        worker_id = NULL,
                         updated_at = ?
                     WHERE id = ?
                 `).run(Date.now(), job.id)
